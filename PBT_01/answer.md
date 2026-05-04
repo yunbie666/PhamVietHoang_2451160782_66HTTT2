@@ -135,6 +135,28 @@ câu c1
   <meta charset="UTF-8"> <!-- bảng mã -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive -->
   <title>Product Detail</title>
+   <meta charset="UTF-8">
+  <title>Product Detail</title>
+  <style>
+    /* CSS ở đây */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #d70018; /* màu đỏ thegioididong */
+      padding: 10px;
+      color: white;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+  </style>
 </head>
 <body>
 
