@@ -118,35 +118,19 @@ Trong một bảng HTML, các thẻ này dùng để chia cấu trúc rõ ràng 
 
 ## CÂU B3
 
-**Lỗi 1:** Dòng 1 — DOCTYPE sai
-→ Sửa: `<!DOCTYPE html>`
-
-**Lỗi 2:** Dòng 2 — thiếu ngôn ngữ
-→ Sửa: `<html lang="vi">`
-
-**Lỗi 3:** Thiếu `</title>`
-
-**Lỗi 4:** charset sai
-→ Sửa: `UTF-8`
-
-**Lỗi 5:** Sai thẻ `<h1>`
-
-**Lỗi 6:** Sai thẻ `<a>`
-
-**Lỗi 7:** Sai thứ tự heading
-
-**Lỗi 8:** `<img>` thiếu alt
-
-**Lỗi 9:** Lồng thẻ sai `<b>`
-
-**Lỗi 10:** Sai table (`<th>`, `<thead>`, `<tbody>`)
-
-**Lỗi 11:** 2 thẻ `<main>`
-
-**Lỗi 12:** Thiếu `</p>`
-
-**Lỗi 13:** Thiếu `</html>`
-
+** Lỗi  1: ** Dòng 1 — Phần khai báo DOCTYPE chưa đúng chuẩn HTML5 — Cách sửa: Đổi <!DOCTYPE> thành <!DOCTYPE html>
+** Lỗi 2  :**  Dòng 2 — Thẻ <html> chưa có thông tin về ngôn ngữ — Cách sửa: Đổi <html> thành <html lang="vi">
+** Lỗi 3: ** Dòng 4 — Thiếu thẻ đóng cho phần tiêu đề trang — Cách sửa: Thêm thẻ </title> vào cuối dòng
+** Lỗi 4:**  Dòng 5 — Giá trị charset chưa đúng định dạng chuẩn — Cách sửa: Đổi <meta charset="utf8"> thành <meta charset="UTF-8">
+** Lỗi 5:**  Dòng 8 — Thẻ <h1> viết sai cú pháp và chưa đặt đúng vị trí — Cách sửa: Sửa <h1>...<h1> thành <h1>...</h1> và di chuyển toàn bộ dòng này vào bên trong thẻ <header>
+** Lỗi 6:**  Dòng 12 — Thẻ liên kết chưa được đóng đúng cách — Cách sửa: Đổi thẻ <a> ở cuối thành </a>
+** Lỗi 7:**  Dòng 19 & 26 — Thứ tự các thẻ heading chưa hợp lý — Cách sửa: Đổi <h3> thành <h2> để đảm bảo hệ thống phân cấp chuẩn
+** Lỗi 8:**  Dòng 20 — Thẻ <img> thiếu thuộc tính cần thiết và chưa đúng cú pháp — Cách sửa: Sửa thành <img src="iphone.jpg" alt="iPhone 16 Pro">
+** Lỗi 9:**  Dòng 22 — Lỗi lồng thẻ và sử dụng thẻ chưa đúng ý nghĩa — Cách sửa: Sửa <p>Giá: <b>25.990.000đ</p></b> thành <p>Giá: <strong>25.990.000đ</strong></p>
+** Lỗi 10:**  Dòng 29 & 30 — Phần tiêu đề bảng chưa dùng đúng thẻ — Cách sửa: Đổi <td> thành <th> và bọc khối hàng đó trong <thead >, đồng thời bọc phần dữ liệu phía dưới trong <tbody>
+** Lỗi 11:**  Dòng 40 — Trang sử dụng hai thẻ <main> không đúng cấu trúc — Cách sửa: Đổi thẻ <main> thứ hai thành <aside>
+** Lỗi 12:**  Dòng 45 — Thẻ <p> chưa được đóng đầy đủ — Cách sửa: Thêm </p> vào cuối câu
+** Lỗi 13:**  Dòng 47 (Cuối file) — Thiếu thẻ kết thúc toàn bộ tài liệu HTML — Cách sửa: Thêm </html> ở dòng cuối cùng sau </body>
 ---
 
 ## CÂU B4
@@ -165,8 +149,14 @@ Trang được chọn: thegioididong
 
 ### Các phần chưa dùng đúng semantic:
 
-* Dùng `<div>` thay `<header>`
-* Dùng `<div>` thay `<section>`
+
+
+
+* Trang sử dụng thẻ <div> cho phần đầu trang thay vì dùng <header>
+  Ví dụ: <div class="header-top-bar"></div> có thể thay bằng <header></header>
+
+* Một số khu vực nội dung vẫn dùng <div> thay vì thẻ semantic phù hợp
+  Ví dụ: <div class="header-overlay"></div> có thể thay bằng <section></section>
 
 ![img](screenshots/b4-1.4.png)
 
@@ -185,37 +175,157 @@ Trang được chọn: thegioididong
 
 ## Câu C1
 
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"> <!-- bảng mã -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- responsive -->
   <title>Product Detail</title>
+   <meta charset="UTF-8">
+  <title>Product Detail</title>
+  <style>
+    /* CSS ở đây */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #d70018; /* màu đỏ thegioididong */
+      padding: 10px;
+      color: white;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+  </style>
 </head>
 <body>
-<header>
-<nav>
-<ul>
-<li><a href="#">Trang chủ</a></li>
-<li><a href="#">Danh mục</a></li>
-</ul>
-</nav>
-</header>
+
+  <!-- HEADER -->
+  <header>
+    <nav> <!-- menu -->
+      <ul>
+        <li><a href="#">Trang chủ</a></li>
+        <li><a href="#">Danh mục</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <nav>
+    <ol> <!-- có thứ tự -->
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#">Điện thoại</a></li>
+      <li>iPhone 16</li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- chứa nội dung chính + sidebar -->
+    <div>
+
+      <!-- sản phẩm -->
+      <section>
+
+        <!-- ảnh -->
+        <div>
+          <img src="#" alt="ảnh chính">
+
+          <div> <!-- ảnh nhỏ -->
+            <img src="#" alt="">
+            <img src="#" alt="">
+            <img src="#" alt="">
+            <img src="#" alt="">
+            <img src="#" alt="">
+          </div>
+        </div>
+
+        <!-- thông tin -->
+        <div>
+          <h1>Tên sản phẩm</h1>
+          <p>Giá</p>
+
+          <div> <!-- đánh giá -->
+            <span>★★★★★</span>
+          </div>
+
+          <p>Mô tả sản phẩm...</p>
+        </div>
+
+      </section>
+
+      <!-- sidebar -->
+      <aside>
+        <h2>Sản phẩm tương tự</h2>
+        <ul>
+          <li><a href="#">SP 1</a></li>
+          <li><a href="#">SP 2</a></li>
+        </ul>
+      </aside>
+
+    </div>
+
+    <!-- thông số -->
+    <section>
+      <h2>Thông số kỹ thuật</h2>
+      <table>
+        <thead> <!-- phần đầu -->
+          <tr>
+            <th>Thuộc tính</th>
+            <th>Giá trị</th>
+          </tr>
+        </thead>
+        <tbody> <!-- dữ liệu -->
+          <tr>
+            <td>Pin</td>
+            <td>...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- bình luận -->
+    <section>
+      <h2>Đánh giá</h2>
+
+      <form>
+        <textarea></textarea>
+        <button type="submit">Gửi</button>
+      </form>
+
+      <div>
+        <div> <!-- 1 comment -->
+          <p>Tên</p>
+          <p>Nội dung</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Footer</p>
+  </footer>
+
 </body>
 </html>
-```
 
 ---
 
 ## Câu C2
 
-Mình không đồng ý với ý kiến chỉ dùng `<div>` cho mọi thứ.
+Mình không đồng ý với ý kiến chỉ dùng <div> cho mọi thứ. Vì thứ nhất là SEO, các thẻ semantic như <header>, <main>, <article> giúp Google hiểu cấu trúc trang tốt hơn. Nếu dùng toàn <div> thì máy tìm kiếm khó biết đâu là nội dung chính.
 
-* SEO kém
-* Accessibility kém
-* Không có ý nghĩa cấu trúc
+Thứ hai là accessibility. Người dùng dùng screen reader sẽ dựa vào các thẻ như <nav> hay <main> để di chuyển nhanh trong trang. Nếu chỉ dùng <div> thì trải nghiệm sẽ kém.
 
-Tuy nhiên `<div>` vẫn cần thiết cho layout.
+Ví dụ, khi dùng <article> cho mỗi sản phẩm hoặc bài viết thì cả Google và screen reader đều hiểu đó là một nội dung độc lập. Còn nếu dùng <div> thì phải dựa vào class, mà class không có ý nghĩa chuẩn.
 
+Tuy nhiên <div> vẫn cần thiết trong một số trường hợp như chia layout (flex, grid) hoặc nhóm các phần tử lại mà không cần ý nghĩa cụ thể.
 **Kết luận:** nên kết hợp semantic HTML và `<div>`.
