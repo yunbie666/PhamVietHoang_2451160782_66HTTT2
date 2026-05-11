@@ -1,27 +1,40 @@
-# PHẦN A — KIỂM TRA ĐỌC HIỂU
+### Câu A1 — 3 Cách Nhúng CSS
 
-# Câu A1 — 3 cách nhúng CSS
+#### 1. Inline CSS (CSS nội tuyến)
 
-## 1. Inline CSS
-
-Ví dụ:
+* Ví dụ:
 
 ```html
-<p style="color: red;">Hello World</p>
-Ưu điểm
-Viết nhanh
-Test nhanh style
-Nhược điểm
-Khó bảo trì
-Không tái sử dụng được
-HTML bị rối
-Khi dùng
-Test nhanh
-Override tạm thời
-2. Internal CSS
+<p style="color: red; font-size: 16px;">
+    Hello World
+</p>
+```
 
-Ví dụ:
+* Ưu điểm:
 
+  * Viết nhanh và đơn giản
+  * Áp dụng trực tiếp lên phần tử
+  * Có độ ưu tiên cao
+
+* Nhược điểm:
+
+  * Khó bảo trì khi dự án lớn
+  * Không thể tái sử dụng
+  * Làm code HTML khó đọc
+
+* Khi nào nên dùng:
+
+  * Test nhanh giao diện
+  * Dùng JavaScript thay đổi style động
+  * Chỉnh sửa tạm thời một phần tử
+
+---
+
+#### 2. Internal CSS (CSS nội bộ)
+
+* Ví dụ:
+
+```html
 <head>
     <style>
         p {
@@ -29,48 +42,74 @@ Ví dụ:
         }
     </style>
 </head>
-Ưu điểm
-Dễ quản lý hơn inline
-Không cần file riêng
-Nhược điểm
-Chỉ dùng cho 1 trang
-HTML dài hơn
-Khi dùng
-Demo nhỏ
-Bài tập đơn giản
-3. External CSS
+```
 
-Ví dụ:
+* Ưu điểm:
 
+  * Quản lý CSS tập trung trong cùng file HTML
+  * Có thể dùng selectors để style nhiều phần tử
+  * Dễ viết hơn inline CSS
+
+* Nhược điểm:
+
+  * Không tái sử dụng được cho nhiều trang
+  * File HTML sẽ dài hơn nếu CSS nhiều
+
+* Khi nào nên dùng:
+
+  * Website chỉ có 1 trang
+  * Demo giao diện nhanh
+  * Landing page đơn giản
+
+---
+
+#### 3. External CSS (CSS bên ngoài)
+
+* Ví dụ:
+
+```html
 <link rel="stylesheet" href="style.css">
-p {
-    color: green;
-}
-Ưu điểm
-Chuyên nghiệp
-Dễ bảo trì
-Tái sử dụng nhiều trang
-Nhược điểm
-Cần file riêng
-Khi dùng
-Website thật
-Project lớn
-Câu hỏi thêm
+```
 
-Nếu cùng 1 element có cả inline, internal và external CSS thì:
+* Ưu điểm:
 
-Thứ tự ưu tiên:
-Inline CSS
-Internal / External CSS
-Browser default
+  * Tách riêng HTML và CSS
+  * Dễ bảo trì và chỉnh sửa
+  * Có thể tái sử dụng cho nhiều trang
+  * Trình duyệt có thể cache giúp tải nhanh hơn
+
+* Nhược điểm:
+
+  * Cần tải thêm file CSS riêng
+  * Nếu file CSS lỗi thì giao diện có thể bị mất style
+
+* Khi nào nên dùng:
+
+  * Hầu hết các dự án thực tế
+  * Website nhiều trang
+  * Dự án cần bảo trì lâu dài
+
+---
+
+### Câu hỏi thêm
+
+Nếu cùng một phần tử có cả Inline CSS, Internal CSS và External CSS cùng áp dụng thì:
+
+**Inline CSS sẽ được ưu tiên cao nhất.**
 
 Ví dụ:
 
-<p style="color:red;">Hello</p>
+```html
+<p style="color: red;">Hello</p>
+```
+
+```css
 p {
     color: blue;
 }
+```
 
-Kết quả cuối cùng: red
+Kết quả cuối cùng chữ sẽ có màu đỏ.
 
-Vì inline CSS có specificity cao hơn.
+Lý do:
+Inline CSS được áp dụng trực tiếp lên phần tử HTML nên có specificity cao hơn Internal CSS và External CSS.
