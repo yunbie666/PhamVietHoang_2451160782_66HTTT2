@@ -1,0 +1,93 @@
+/* ========================= */
+/* GENERAL */
+/* ========================= */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 20px;
+    color: #333;
+}
+
+h1,
+h2 {
+    color: #1e3c72;
+}
+
+section {
+    margin-bottom: 50px;
+}
+
+/* ========================= */
+/* PART 1 */
+/* ========================= */
+
+.box-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.box {
+    width: 300px;
+    padding: 20px;
+    border: 5px solid #222;
+    background-color: #dbeafe;
+}
+
+/* Mặc định */
+.content-box {
+    box-sizing: content-box;
+}
+
+/* Border-box */
+.border-box {
+    box-sizing: border-box;
+    background-color: #bfdbfe;
+}
+
+/* ========================= */
+/* PART 2 */
+/* ========================= */
+
+.layout-container {
+    width: 1000px;
+    display: flex;
+    margin-top: 20px;
+    border: 3px solid #000;
+}
+
+/* Dùng border-box để tổng vẫn = 1000px */
+.sidebar,
+.content,
+.ads {
+    box-sizing: border-box;
+}
+
+/* Left column */
+.sidebar {
+    width: 250px;
+    padding: 15px;
+    background-color: #e5e7eb;
+}
+
+/* Middle column */
+.content {
+    width: 500px;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+/* Right column */
+.ads {
+    width: 250px;
+    padding: 15px;
+    background-color: #e5e7eb;
+}
+
+/* Styling */
+.sidebar,
+.content,
+.ads {
+    border: 1px solid #999;
+}

@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f4f6f9;
+}
+
+h1,
+h2 {
+    color: #1e3c72;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+/* ===================================== */
+/* COMMON */
+/* ===================================== */
+
+.container {
+    width: 960px;
+    margin: 20px auto;
+    border: 3px solid #000;
+    overflow: hidden;
+}
+
+.sidebar,
+.content {
+    float: left;
+    min-height: 150px;
+}
+
+/* ===================================== */
+/* 1. BROKEN LAYOUT */
+/* ===================================== */
+
+.broken .sidebar {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #dbeafe;
+}
+
+.broken .content {
+    width: 660px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    background: #fde68a;
+}
+
+/* ===================================== */
+/* 2. FIX USING BORDER-BOX */
+/* ===================================== */
+
+.fixed-border-box .sidebar,
+.fixed-border-box .content {
+    box-sizing: border-box;
+}
+
+.fixed-border-box .sidebar {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #bbf7d0;
+}
+
+.fixed-border-box .content {
+    width: 660px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    background: #86efac;
+}
+
+/* ===================================== */
+/* 3. FIX WITHOUT BORDER-BOX */
+/* ===================================== */
+
+.fixed-manual .sidebar {
+    width: 258px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #c7d2fe;
+}
+
+.fixed-manual .content {
+    width: 598px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    background: #a5b4fc;
+}
