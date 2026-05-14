@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">Viet Hoang</div>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Hi, I'm <span>Viet Hoang</span></h1>
+        <p>Full-Stack Developer | UI Designer | Problem Solver</p>
+        <a href="#portfolio" class="cta-button">View My Work</a>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
+                        alt="Profile Photo" />
+                </div>
+                <div class="about-content">
+                    <h2>About Me</h2>
+                    <p class="lead">I'm a passionate developer with 3+ years of experience building web applications.
+                    </p>
+                    <p>Specialized in Frontend development with React and Vue. Also experienced in Backend with Node.js
+                        and Python.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <h2>My Skills</h2>
+            <div class="skills-grid">
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-name">HTML5</span>
+                        <span class="skill-percent">95%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="95"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-name">CSS3</span>
+                        <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="90"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-name">JavaScript</span>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="85"></div>
+                    </div>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <span class="skill-name">React</span>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="80"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="portfolio-section">
+        <div class="container">
+            <h2>My Portfolio</h2>
+
+            <div class="portfolio-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Web</button>
+                <button class="filter-btn">Mobile</button>
+                <button class="filter-btn">Design</button>
+            </div>
+
+            <div class="portfolio-grid">
+
+                <div class="portfolio-item">
+                    <a href="#lightbox-1">
+                        <img src="https://picsum.photos/400/300?random=1" alt="Project 1" />
+                        <div class="portfolio-overlay">
+                            <h3>E-Commerce Website</h3>
+                            <p>React + Node.js</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="portfolio-item">
+                    <a href="#lightbox-2">
+                        <img src="https://picsum.photos/400/300?random=2" alt="Project 2" />
+                        <div class="portfolio-overlay">
+                            <h3>Blog Platform</h3>
+                            <p>Vue + Express</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="portfolio-item">
+                    <a href="#lightbox-3">
+                        <img src="https://picsum.photos/400/300?random=3" alt="Project 3" />
+                        <div class="portfolio-overlay">
+                            <h3>Dashboard UI</h3>
+                            <p>React + Tailwind</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="portfolio-item">
+                    <a href="#lightbox-4">
+                        <img src="https://picsum.photos/400/300?random=4" alt="Project 4" />
+                        <div class="portfolio-overlay">
+                            <h3>Food Delivery App</h3>
+                            <p>React Native</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="portfolio-item">
+                    <a href="#lightbox-5">
+                        <img src="https://picsum.photos/400/300?random=5" alt="Project 5" />
+                        <div class="portfolio-overlay">
+                            <h3>Fitness Tracker</h3>
+                            <p>Flutter</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="portfolio-item">
+                    <a href="#lightbox-6">
+                        <img src="https://picsum.photos/400/300?random=6" alt="Project 6" />
+                        <div class="portfolio-overlay">
+                            <h3>Brand Identity</h3>
+                            <p>Figma + Illustrator</p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOXES -->
+    <div id="lightbox-1" class="lightbox">
+        <img src="https://via.placeholder.com/900x600/6366f1/ffffff?text=Project+1" alt="Project 1" />
+        <a href="#" class="lightbox-close">&times;</a>
+    </div>
+    <div id="lightbox-2" class="lightbox">
+        <img src="https://via.placeholder.com/900x600/8b5cf6/ffffff?text=Project+2" alt="Project 2" />
+        <a href="#" class="lightbox-close">&times;</a>
+    </div>
+    <div id="lightbox-3" class="lightbox">
+        <img src="https://via.placeholder.com/900x600/a855f7/ffffff?text=Project+3" alt="Project 3" />
+        <a href="#" class="lightbox-close">&times;</a>
+    </div>
+    <div id="lightbox-4" class="lightbox">
+        <img src="https://via.placeholder.com/900x600/6366f1/ffffff?text=Project+4" alt="Project 4" />
+        <a href="#" class="lightbox-close">&times;</a>
+    </div>
+    <div id="lightbox-5" class="lightbox">
+        <img src="https://via.placeholder.com/900x600/8b5cf6/ffffff?text=Project+5" alt="Project 5" />
+        <a href="#" class="lightbox-close">&times;</a>
+    </div>
+    <div id="lightbox-6" class="lightbox">
+        <img src="https://via.placeholder.com/900x600/a855f7/ffffff?text=Project+6" alt="Project 6" />
+        <a href="#" class="lightbox-close">&times;</a>
+    </div>
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+
+            <h2 class="section-title">Get In Touch</h2>
+
+            <div class="contact-wrapper">
+
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+
+                    <p>
+                        Feel free to reach out. I'm always open to discussing
+                        new projects and creative ideas.
+                    </p>
+
+                    <div class="info-item">
+                        <span class="icon">📧</span>
+                        <span>viethoang1062@gmail.com</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="icon">📍</span>
+                        <span>Hanoi, Vietnam</span>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <form class="contact-form">
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Send Message
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <!-- Logo -->
+                <div class="footer-logo">
+                    YourName
+                </div>
+
+                <!-- Tagline -->
+                <p class="footer-tagline">
+                    Building digital experiences
+                </p>
+
+                <!-- Social Links -->
+                <div class="social-links">
+
+                    <!-- GitHub -->
+                    <a href="#" class="social-link" aria-label="GitHub">
+
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12
+                        0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234
+                        c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756
+                        -1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237
+                        1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604
+                        -2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381
+                        1.236-3.221-.124-.303-.535-1.524.117-3.176
+                        0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399
+                        3.003-.404 1.02.005 2.047.138 3.006.404
+                        2.291-1.552 3.297-1.23 3.297-1.23.653
+                        1.653.242 2.874.118 3.176.77.84 1.235
+                        1.911 1.235 3.221 0 4.609-2.807
+                        5.624-5.479 5.921.43.372.823 1.102.823
+                        2.222v3.293c0 .319.192.694.801.576
+                        4.765-1.589 8.199-6.086 8.199-11.386
+                        0-6.627-5.373-12-12-12z" />
+                        </svg>
+
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88
+                        0 3.5 1.12 1 2.5 1 5 2.12 5 3.5zM.5
+                        8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-1
+                        1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7
+                        6V24h-4v-7.1c0-1.7 0-3.9-2.4-3.9
+                        -2.4 0-2.8 1.9-2.8 3.8V24h-4V8z" />
+                        </svg>
+
+                    </a>
+
+                    <!-- Email -->
+                    <a href="#" class="social-link" aria-label="Email">
+
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2 4h20c1.1 0 2 .9 2 2v12c0
+                        1.1-.9 2-2 2H2c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0
+                        4v10h20V8l-10 6L2 8zm10 4L22 6H2l10 6z" />
+                        </svg>
+
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2026 YourName. All rights reserved.</p>
+            </div>
+
+        </div>
+    </footer>
+    <!-- SCRIPT -->
+    <script>
+        const bars = document.querySelectorAll('.skill-progress');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    bar.style.width = bar.dataset.width + '%';
+                }
+            });
+        }, { threshold: 0.3 });
+        bars.forEach(bar => observer.observe(bar));
+    </script>
+
+</body>
+
+</html>
