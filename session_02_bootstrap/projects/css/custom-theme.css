@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --bs-primary: #14b8a6;
+    --bs-primary-rgb: 20, 184, 166;
+    --bs-body-font-family: 'Inter', system-ui, sans-serif;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0d9488;
+    border-color: #0d9488;
+    color: white;
+}
+
+.py-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.gap-4 {
+    gap: 2rem;
+}
+
+.card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+}
+
+:root {
+    --custom-slate-50: #f8fafc;
+    --custom-slate-200: #e2e8f0;
+    --custom-slate-500: #64748b;
+    --custom-slate-700: #334155;
+    --custom-slate-900: #0f172a;
+}
+
+body {
+    background-color: var(--custom-slate-50);
+    color: var(--custom-slate-700);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--custom-slate-900);
+}
+
+.text-muted {
+    color: var(--custom-slate-500) !important;
+}

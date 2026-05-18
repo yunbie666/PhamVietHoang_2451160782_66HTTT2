@@ -1,0 +1,29 @@
+/* Kích thước Avatar */
+.comment img.rounded-circle {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.comment.reply img.rounded-circle {
+    width: 40px;
+    height: 40px;
+}
+
+.comment.reply {
+    border-left: 3px solid #e2e8f0;
+    padding-left: 1rem;
+}
+
+.comment.reply.ms-5 {
+    margin-left: 3rem;
+}
+
+.btn-link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    color: #0a58ca;
+}
