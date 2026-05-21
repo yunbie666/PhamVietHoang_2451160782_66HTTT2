@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B3 — CSS Grid Layout — Trang E-Commerce</title>
+  <link rel="stylesheet" href="grid.css" />
+</head>
+<body>
+
+  <!--
+    LAYOUT TỔNG THỂ (CSS Grid):
+    ┌──────────────────────────────────────────┐
+    │              HEADER (full width)          │
+    ├──────────────────────────────────────────┤
+    │              HERO BANNER                  │
+    ├──────────┬──────────────────────┬─────────┤
+    │ SIDEBAR  │     MAIN CONTENT     │   ADS   │
+    ├──────────┴──────────────────────┴─────────┤
+    │              FOOTER (full width)          │
+    └──────────────────────────────────────────┘
+    grid-template-columns: 200px 1fr 200px
+    grid-template-areas: named areas (bonus)
+  -->
+
+  <div class="page-grid">
+
+    <!-- ====== HEADER — grid-area: header (span full width) ====== -->
+    <header class="site-header">
+      <div class="header-logo">🛒 GridMart</div>
+      <nav class="header-nav">
+        <a href="#">Trang chủ</a>
+        <a href="#">Danh mục</a>
+        <a href="#">Flash Sale</a>
+        <a href="#">Thương hiệu</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-sm">Đăng nhập</button>
+        <button class="btn-sm filled">Đăng ký</button>
+      </div>
+    </header>
+
+    <!-- ====== HERO BANNER — grid-area: hero (span full width) ====== -->
+    <section class="hero-banner">
+      <!-- Cột 1: Text -->
+      <div class="hero-text">
+        <h1>Sale lớn nhất<br/><span>Hè 2026</span> 🔥</h1>
+        <p>Giảm đến 50% hàng ngàn sản phẩm công nghệ.<br/>Miễn phí vận chuyển toàn quốc.</p>
+        <a href="#" class="hero-cta">Mua sắm ngay →</a>
+      </div>
+
+      <!-- Cột 2: Stats -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="num">10K+</div>
+          <div class="label">Sản phẩm</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">500K</div>
+          <div class="label">Khách hàng</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">99%</div>
+          <div class="label">Hài lòng</div>
+        </div>
+      </div>
+
+      <!-- Cột 3: Featured product (bonus: grid-column: span 1) -->
+      <div class="hero-featured">
+        <div class="feat-icon">💻</div>
+        <div>
+          <h3>MacBook Air M3</h3>
+          <p>Chip Apple M3 · 8GB RAM · 256GB SSD</p>
+          <div class="feat-price">27.490.000₫</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SIDEBAR — grid-area: sidebar ====== -->
+    <aside class="sidebar">
+      <h3>🔍 Bộ lọc</h3>
+
+      <!-- Filter: Danh mục -->
+      <div class="filter-group">
+        <h4>Danh mục</h4>
+        <label><input type="checkbox" checked /> Điện thoại</label>
+        <label><input type="checkbox" checked /> Laptop</label>
+        <label><input type="checkbox" /> Tai nghe</label>
+        <label><input type="checkbox" /> Đồng hồ</label>
+        <label><input type="checkbox" /> Máy ảnh</label>
+        <label><input type="checkbox" /> Màn hình</label>
+      </div>
+
+      <!-- Filter: Thương hiệu -->
+      <div class="filter-group">
+        <h4>Thương hiệu</h4>
+        <label><input type="checkbox" checked /> Apple</label>
+        <label><input type="checkbox" /> Samsung</label>
+        <label><input type="checkbox" /> Sony</label>
+        <label><input type="checkbox" /> LG</label>
+        <label><input type="checkbox" /> Dell</label>
+      </div>
+
+      <!-- Filter: Giá -->
+      <div class="filter-group">
+        <h4>Khoảng giá</h4>
+        <div class="price-range">
+          <input type="range" min="0" max="50000000" value="30000000" />
+          <div class="price-labels">
+            <span>0₫</span>
+            <span>50tr</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter: Đánh giá -->
+      <div class="filter-group">
+        <h4>Đánh giá</h4>
+        <label><input type="checkbox" /> ⭐⭐⭐⭐⭐ 5 sao</label>
+        <label><input type="checkbox" checked /> ⭐⭐⭐⭐ 4 sao+</label>
+        <label><input type="checkbox" /> ⭐⭐⭐ 3 sao+</label>
+      </div>
+    </aside>
+
+    <!-- ====== MAIN CONTENT — grid-area: main ====== -->
+    <main class="main-content">
+      <!-- Toolbar -->
+      <div class="main-toolbar">
+        <h2>📦 Sản phẩm (6 items)</h2>
+        <div class="toolbar-right">
+          <select>
+            <option>Nổi bật nhất</option>
+            <option>Giá thấp → cao</option>
+            <option>Giá cao → thấp</option>
+            <option>Mới nhất</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Grid con — 3 cột (Grid lồng nhau) -->
+      <div class="product-grid">
+
+        <!-- Card 1 -->
+        <div class="product-card">
+          <div class="card-img" style="background: linear-gradient(135deg,#667eea,#764ba2);">📱</div>
+          <div class="card-body">
+            <p class="card-name">iPhone 16 Pro Max 256GB Natural Titanium</p>
+            <div class="card-rating">★★★★★ (842)</div>
+            <div>
+              <span class="card-price">29.990.000₫</span>
+              <span class="card-old-price">33.000.000₫</span>
+            </div>
+          </div>
+          <div class="card-footer"><button class="btn-buy">🛒 Mua ngay</button></div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="product-card">
+          <div class="card-img" style="background: linear-gradient(135deg,#f093fb,#f5576c);">💻</div>
+          <div class="card-body">
+            <p class="card-name">MacBook Air 13" M3 8GB 256GB Midnight</p>
+            <div class="card-rating">★★★★★ (621)</div>
+            <div>
+              <span class="card-price">27.490.000₫</span>
+              <span class="card-old-price">29.990.000₫</span>
+            </div>
+          </div>
+          <div class="card-footer"><button class="btn-buy">🛒 Mua ngay</button></div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="product-card">
+          <div class="card-img" style="background: linear-gradient(135deg,#4facfe,#00f2fe);">🎧</div>
+          <div class="card-body">
+            <p class="card-name">Sony WH-1000XM5 Wireless Noise Cancelling</p>
+            <div class="card-rating">★★★★★ (1.2K)</div>
+            <div>
+              <span class="card-price">6.990.000₫</span>
+              <span class="card-old-price">8.490.000₫</span>
+            </div>
+          </div>
+          <div class="card-footer"><button class="btn-buy">🛒 Mua ngay</button></div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="product-card">
+          <div class="card-img" style="background: linear-gradient(135deg,#43e97b,#38f9d7);">⌚</div>
+          <div class="card-body">
+            <p class="card-name">Apple Watch Series 10 GPS 46mm Jet Black</p>
+            <div class="card-rating">★★★★☆ (389)</div>
+            <div>
+              <span class="card-price">11.490.000₫</span>
+              <span class="card-old-price">12.990.000₫</span>
+            </div>
+          </div>
+          <div class="card-footer"><button class="btn-buy">🛒 Mua ngay</button></div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="product-card">
+          <div class="card-img" style="background: linear-gradient(135deg,#fa709a,#fee140);">📷</div>
+          <div class="card-body">
+            <p class="card-name">Canon EOS R50 Kit 18-45mm + 55-210mm</p>
+            <div class="card-rating">★★★★☆ (215)</div>
+            <div>
+              <span class="card-price">19.990.000₫</span>
+            </div>
+          </div>
+          <div class="card-footer"><button class="btn-buy">🛒 Mua ngay</button></div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="product-card">
+          <div class="card-img" style="background: linear-gradient(135deg,#a18cd1,#fbc2eb);">🖥️</div>
+          <div class="card-body">
+            <p class="card-name">LG UltraWide 34" 144Hz IPS HDR400</p>
+            <div class="card-rating">★★★★★ (477)</div>
+            <div>
+              <span class="card-price">12.490.000₫</span>
+              <span class="card-old-price">14.990.000₫</span>
+            </div>
+          </div>
+          <div class="card-footer"><button class="btn-buy">🛒 Mua ngay</button></div>
+        </div>
+
+      </div><!-- end product-grid -->
+    </main>
+
+    <!-- ====== ADS SIDEBAR — grid-area: ads ====== -->
+    <aside class="ads-sidebar">
+      <h4>Quảng cáo</h4>
+
+      <div class="ad-banner" style="background: linear-gradient(135deg,#e94560,#c73652);">
+        <p>🔥</p>
+        <strong>Flash Sale</strong><br/>
+        <small>Hôm nay 20:00</small>
+      </div>
+
+      <div class="ad-banner" style="background: linear-gradient(135deg,#16213e,#0f3460);">
+        <p>📦</p>
+        <strong>Free Ship</strong><br/>
+        <small>Đơn từ 500k</small>
+      </div>
+
+      <div class="ad-banner" style="background: linear-gradient(135deg,#43e97b,#38f9d7); color: #16213e;">
+        <p>💳</p>
+        <strong>Trả góp 0%</strong><br/>
+        <small>12 tháng</small>
+      </div>
+
+      <div class="ad-banner" style="background: linear-gradient(135deg,#667eea,#764ba2);">
+        <p>🎁</p>
+        <strong>Quà tặng</strong><br/>
+        <small>Mỗi đơn hàng</small>
+      </div>
+    </aside>
+
+    <!-- ====== FOOTER — grid-area: footer (span full width) ====== -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>🛒 GridMart</h4>
+          <ul>
+            <li><a href="#">Về chúng tôi</a></li>
+            <li><a href="#">Tuyển dụng</a></li>
+            <li><a href="#">Báo chí</a></li>
+            <li><a href="#">Đối tác</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Hỗ trợ</h4>
+          <ul>
+            <li><a href="#">Trung tâm trợ giúp</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Bảo hành</a></li>
+            <li><a href="#">Theo dõi đơn hàng</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Liên kết</h4>
+          <ul>
+            <li><a href="#">Flash Sale</a></li>
+            <li><a href="#">Thương hiệu</a></li>
+            <li><a href="#">Blog công nghệ</a></li>
+            <li><a href="#">So sánh sản phẩm</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Liên hệ</h4>
+          <ul>
+            <li><a href="#">📞 1800 6789</a></li>
+            <li><a href="#">✉️ support@gridmart.vn</a></li>
+            <li><a href="#">📍 Hà Nội, Việt Nam</a></li>
+            <li><a href="#">⏰ 8:00 – 22:00</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 GridMart. Tất cả quyền được bảo lưu.
+      </div>
+    </footer>
+
+  </div><!-- end page-grid -->
+
+</body>
+</html>

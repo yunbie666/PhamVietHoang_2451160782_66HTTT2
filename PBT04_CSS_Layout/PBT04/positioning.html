@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B1 — CSS Positioning Playground</title>
+  <link rel="stylesheet" href="positioning.css" />
+</head>
+<body>
+
+  <!-- ====== FIXED HEADER ====== -->
+  <header id="top">
+    <div class="logo">🛒 ShopVN</div>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="#">Sản phẩm</a>
+      <a href="#">Khuyến mãi</a>
+      <a href="#">Liên hệ</a>
+    </nav>
+  </header>
+
+  <!-- ====== PAGE WRAPPER ====== -->
+  <div class="page-wrapper">
+
+    <!-- ====== STICKY SIDEBAR ====== -->
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h3>📂 Danh mục</h3>
+        <ul>
+          <li>📱 Điện thoại</li>
+          <li>💻 Laptop</li>
+          <li>🎧 Tai nghe</li>
+          <li>⌚ Đồng hồ</li>
+          <li>📷 Máy ảnh</li>
+          <li>🖥️ Màn hình</li>
+          <li>🖱️ Phụ kiện</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="main-content">
+      <h2>🔥 Sản phẩm nổi bật</h2>
+
+      <div class="product-grid">
+
+        <!-- Card 1: có badge HOT -->
+        <div class="card">
+          <span class="badge-hot">HOT</span>
+          <div class="card-placeholder-img">📱</div>
+          <div class="card-body">
+            <h4>iPhone 16 Pro Max</h4>
+            <p class="price">29.990.000₫</p>
+          </div>
+        </div>
+
+        <!-- Card 2: có badge HOT -->
+        <div class="card">
+          <span class="badge-hot">HOT</span>
+          <div class="card-placeholder-img" style="background: linear-gradient(135deg, #f093fb, #f5576c);">💻</div>
+          <div class="card-body">
+            <h4>MacBook Air M3</h4>
+            <p class="price">27.490.000₫</p>
+          </div>
+        </div>
+
+        <!-- Card 3: không có badge -->
+        <div class="card">
+          <div class="card-placeholder-img" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🎧</div>
+          <div class="card-body">
+            <h4>Sony WH-1000XM5</h4>
+            <p class="price">6.990.000₫</p>
+          </div>
+        </div>
+
+        <!-- Card 4: có badge HOT -->
+        <div class="card">
+          <span class="badge-hot">HOT</span>
+          <div class="card-placeholder-img" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">⌚</div>
+          <div class="card-body">
+            <h4>Apple Watch Series 10</h4>
+            <p class="price">11.490.000₫</p>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <div class="card-placeholder-img" style="background: linear-gradient(135deg, #fa709a, #fee140);">📷</div>
+          <div class="card-body">
+            <h4>Canon EOS R50</h4>
+            <p class="price">19.990.000₫</p>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <div class="card-placeholder-img" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb);">🖥️</div>
+          <div class="card-body">
+            <h4>LG UltraWide 34"</h4>
+            <p class="price">12.490.000₫</p>
+          </div>
+        </div>
+
+      </div><!-- end product-grid -->
+
+      <!-- Filler để trang đủ dài test scroll -->
+      <div class="filler">↓ Cuộn xuống để test Fixed Header & Sticky Sidebar ↓</div>
+
+    </main>
+  </div><!-- end page-wrapper -->
+
+  <!-- ====== SCROLL TO TOP BUTTON (position: fixed) ====== -->
+  <a href="#top" class="scroll-to-top" title="Lên đầu trang">↑</a>
+
+</body>
+</html>

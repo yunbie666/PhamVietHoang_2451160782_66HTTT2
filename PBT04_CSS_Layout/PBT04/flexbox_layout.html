@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B2 — Flexbox Navigation & Cards</title>
+  <link rel="stylesheet" href="flexbox.css" />
+</head>
+<body>
+
+  <!-- ============================
+       PHẦN 1 — NAVBAR (Flexbox)
+       |  LOGO  |  Menu  |  Buttons  |
+  ============================= -->
+  <header class="navbar">
+    <!-- Logo bên trái -->
+    <div class="nav-logo">⚡ FlexShop</div>
+
+    <!-- Menu items giữa -->
+    <ul class="nav-menu">
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#">Sản phẩm</a></li>
+      <li><a href="#">Khuyến mãi</a></li>
+      <li><a href="#">Thương hiệu</a></li>
+      <li><a href="#">Liên hệ</a></li>
+    </ul>
+
+    <!-- Nút đăng nhập / đăng ký bên phải -->
+    <div class="nav-actions">
+      <button class="btn-outline">Đăng nhập</button>
+      <button class="btn-filled">Đăng ký</button>
+    </div>
+  </header>
+
+  <!-- ============================
+       PHẦN 2 — PRODUCT CARDS (Flexbox)
+       8 cards = 2 hàng × 4 cột
+  ============================= -->
+  <section class="products-section">
+    <h2 class="section-title">🛍️ Sản phẩm nổi bật</h2>
+
+    <!-- flex-wrap: wrap + flex: 0 0 calc(25% - 15px) → 4 cột -->
+    <div class="card-container">
+
+      <!-- Card 1 -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#667eea,#764ba2);">📱</div>
+        <div class="card-info">
+          <p class="card-name">iPhone 16 Pro Max 256GB</p>
+          <span class="card-price">29.990.000₫</span>
+          <span class="card-old-price">33.000.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#f093fb,#f5576c);">💻</div>
+        <div class="card-info">
+          <p class="card-name">MacBook Air M3 13" 8GB RAM</p>
+          <span class="card-price">27.490.000₫</span>
+          <span class="card-old-price">29.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 3 (mô phỏng text dài để test nút bám đáy) -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#4facfe,#00f2fe);">🎧</div>
+        <div class="card-info">
+          <p class="card-name">Sony WH-1000XM5 Chống ồn chủ động, Pin 30 giờ</p>
+          <span class="card-price">6.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#43e97b,#38f9d7);">⌚</div>
+        <div class="card-info">
+          <p class="card-name">Apple Watch Series 10 GPS 46mm</p>
+          <span class="card-price">11.490.000₫</span>
+          <span class="card-old-price">12.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 5 (hàng 2) -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#fa709a,#fee140);">📷</div>
+        <div class="card-info">
+          <p class="card-name">Canon EOS R50 Kit 18-45mm</p>
+          <span class="card-price">19.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#a18cd1,#fbc2eb);">🖥️</div>
+        <div class="card-info">
+          <p class="card-name">LG UltraWide 34" 144Hz IPS</p>
+          <span class="card-price">12.490.000₫</span>
+          <span class="card-old-price">14.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#ffecd2,#fcb69f);">🖱️</div>
+        <div class="card-info">
+          <p class="card-name">Logitech MX Master 3S Không dây</p>
+          <span class="card-price">1.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="product-card">
+        <div class="card-img" style="background: linear-gradient(135deg,#a1c4fd,#c2e9fb);">⌨️</div>
+        <div class="card-info">
+          <p class="card-name">Keychron K2 Pro Wireless Mechanical</p>
+          <span class="card-price">2.490.000₫</span>
+          <span class="card-old-price">2.990.000₫</span>
+        </div>
+        <div class="card-action">
+          <button class="btn-buy">🛒 Mua ngay</button>
+        </div>
+      </div>
+
+    </div><!-- end card-container -->
+  </section>
+
+</body>
+</html>

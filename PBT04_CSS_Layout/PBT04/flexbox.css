@@ -1,0 +1,213 @@
+/* ===== RESET & BASE ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  color: #333;
+}
+
+/* ===================================
+   PHẦN 1 — NAVBAR (Flexbox)
+=================================== */
+.navbar {
+  display: flex;
+  align-items: center;           /* Căn dọc giữa */
+  justify-content: space-between; /* Logo trái / Menu giữa / Buttons phải */
+  background: #16213e;
+  padding: 0 40px;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+/* Logo */
+.nav-logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #e94560;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+/* Menu giữa */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+
+.nav-menu a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: #e94560;
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+
+.nav-menu a:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.06);
+}
+
+.nav-menu a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Buttons bên phải */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-outline {
+  color: #e94560;
+  border: 1.5px solid #e94560;
+  background: transparent;
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-outline:hover {
+  background: #e94560;
+  color: #fff;
+}
+
+.btn-filled {
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-filled:hover {
+  background: #c73652;
+}
+
+/* ===================================
+   PHẦN 2 — PRODUCT CARDS (Flexbox)
+=================================== */
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #16213e;
+}
+
+.products-section {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Flex container cho cards */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;       /* Cho phép wrap xuống hàng mới */
+  gap: 20px;
+}
+
+/* Mỗi card = 4 cột */
+.product-card {
+  flex: 0 0 calc(25% - 15px); /* 4 cột, trừ gap */
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  /* Card bên trong cũng dùng flex (column direction) */
+  display: flex;
+  flex-direction: column;
+
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);          /* Hover: nâng card lên */
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+.product-card .card-img {
+  width: 100%;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+.product-card .card-info {
+  padding: 14px 16px;
+  flex: 1; /* Chiếm hết phần giữa */
+}
+
+.product-card .card-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #222;
+  line-height: 1.4;
+}
+
+.product-card .card-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e94560;
+}
+
+.product-card .card-old-price {
+  font-size: 12px;
+  color: #aaa;
+  text-decoration: line-through;
+  margin-left: 6px;
+}
+
+.product-card .card-action {
+  padding: 0 16px 16px;
+  margin-top: auto; /* Đẩy nút "Mua" xuống đáy card */
+}
+
+.product-card .btn-buy {
+  width: 100%;
+  background: #16213e;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.product-card .btn-buy:hover {
+  background: #e94560;
+}
