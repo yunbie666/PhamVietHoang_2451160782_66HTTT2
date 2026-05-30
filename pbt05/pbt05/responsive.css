@@ -1,0 +1,529 @@
+/* ============================================================
+   responsive.css — Mobile-First Responsive Product Page
+   PBT05 - CSS Responsive & SCSS
+   ============================================================ */
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --clr-primary: #c0392b;
+  --clr-primary-dark: #96281b;
+  --clr-accent: #f39c12;
+  --clr-bg: #fafafa;
+  --clr-surface: #ffffff;
+  --clr-text: #2c2c2c;
+  --clr-muted: #7f8c8d;
+  --clr-border: #e8e8e8;
+
+  --font-heading: 'Georgia', serif;
+  --font-body: 'Segoe UI', Tahoma, sans-serif;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  --radius: 10px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.18);
+
+  --transition: 0.3s ease;
+}
+
+html {
+  font-size: 15px; /* Mobile base font size */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== HEADER — MOBILE ===== */
+.header {
+  background: var(--clr-surface);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  color: var(--clr-accent);
+}
+
+/* Hamburger button — hiển thị trên mobile */
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--clr-text);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* Nav mobile — ẩn mặc định, hiện khi active */
+.nav {
+  display: none;
+  padding: 0 var(--space-md) var(--space-md);
+  border-top: 1px solid var(--clr-border);
+}
+
+.nav.is-open {
+  display: block;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.nav a {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--clr-text);
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.nav a:hover,
+.nav a.active {
+  background: var(--clr-primary);
+  color: #fff;
+}
+
+/* ===== LAYOUT — MOBILE ===== */
+.page-layout {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Sidebar ẩn trên mobile */
+.sidebar {
+  display: none;
+}
+
+/* Ads bar ẩn trên mobile */
+.ads-bar {
+  display: none;
+}
+
+/* ===== PRODUCT GRID — MOBILE (1 cột) ===== */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: var(--clr-text);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 3px solid var(--clr-primary);
+  display: inline-block;
+}
+
+/* ===== PRODUCT CARD ===== */
+.card {
+  background: var(--clr-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-img-wrap {
+  overflow: hidden;
+  position: relative;
+  padding-top: 66%; /* Tỷ lệ 3:2 */
+}
+
+.card-img-wrap img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-img-wrap img {
+  transform: scale(1.07);
+}
+
+.card-badge {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  background: var(--clr-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 1;
+}
+
+.card-body {
+  padding: var(--space-md);
+}
+
+.card-category {
+  font-size: 0.72rem;
+  color: var(--clr-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: var(--space-sm);
+}
+
+.stars {
+  color: var(--clr-accent);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.rating-count {
+  font-size: 0.75rem;
+  color: var(--clr-muted);
+}
+
+.card-price {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.price-current {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+}
+
+.price-original {
+  font-size: 0.85rem;
+  color: var(--clr-muted);
+  text-decoration: line-through;
+}
+
+.price-discount {
+  font-size: 0.75rem;
+  background: #ffeeba;
+  color: #856404;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.btn-buy {
+  display: block;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--clr-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.btn-buy:hover {
+  background: var(--clr-primary-dark);
+  transform: scale(1.02);
+}
+
+/* ===== FOOTER — MOBILE ===== */
+.footer {
+  background: #1a1a1a;
+  color: #ccc;
+  text-align: center;
+  padding: var(--space-lg) var(--space-md);
+  font-size: 0.85rem;
+}
+
+.footer-logo {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: var(--space-sm);
+}
+
+.footer p {
+  margin-top: var(--space-sm);
+  color: #888;
+}
+
+/* ===================================================
+   TABLET: ≥ 768px
+   =================================================== */
+@media (min-width: 768px) {
+
+  html {
+    font-size: 15.5px; /* Tablet font size */
+  }
+
+  .header-inner {
+    padding: var(--space-md) var(--space-xl);
+  }
+
+  /* Ẩn hamburger, hiện nav ngang */
+  .hamburger {
+    display: none;
+  }
+
+  .nav {
+    display: block;
+    padding: 0;
+    border-top: none;
+  }
+
+  .nav ul {
+    flex-direction: row;
+    gap: var(--space-md);
+  }
+
+  .nav a {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  /* Layout: 2 cột (sidebar nhỏ + main) */
+  .page-layout {
+    padding: var(--space-lg) var(--space-xl);
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-xl);
+  }
+
+  /* Sidebar hiện dưới dạng filter ngang */
+  .sidebar {
+    display: block;
+    width: 220px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--clr-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .filter-group {
+    margin-bottom: var(--space-lg);
+  }
+
+  .filter-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: var(--space-sm);
+    display: block;
+  }
+
+  .filter-group select,
+  .filter-group input[type="range"] {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+  }
+
+  .filter-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .filter-list label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  /* Nội dung chính mở rộng */
+  .main-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Product grid: 2 cột */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Ads bar vẫn ẩn ở tablet */
+  .ads-bar {
+    display: none;
+  }
+
+  .footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: left;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+  }
+
+  .footer-col h4 {
+    color: #fff;
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+  }
+
+  .footer-col p,
+  .footer-col a {
+    display: block;
+    color: #999;
+    text-decoration: none;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+  }
+
+  .footer-col a:hover {
+    color: var(--clr-accent);
+  }
+}
+
+/* ===================================================
+   DESKTOP: ≥ 1024px
+   =================================================== */
+@media (min-width: 1024px) {
+
+  html {
+    font-size: 16px; /* Desktop base */
+  }
+
+  .page-layout {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--space-xl) 60px;
+  }
+
+  /* 3 cột: sidebar | main | ads */
+  .ads-bar {
+    display: block;
+    width: 180px;
+    flex-shrink: 0;
+  }
+
+  .ads-card {
+    background: var(--clr-surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-md);
+    padding: var(--space-md);
+    text-align: center;
+    border: 1px solid var(--clr-border);
+  }
+
+  .ads-card .ads-label {
+    font-size: 0.65rem;
+    color: var(--clr-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--space-sm);
+  }
+
+  .ads-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: var(--space-sm);
+  }
+
+  .ads-card p {
+    font-size: 0.8rem;
+    color: var(--clr-muted);
+  }
+
+  /* Product grid: 4 cột */
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
