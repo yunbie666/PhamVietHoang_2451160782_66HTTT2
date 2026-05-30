@@ -1,0 +1,181 @@
+let students=JSON.parse(localStorage.getItem("students")) || [];
+
+let editingIndex=-1;
+
+const addBtn=document.getElementById("addBtn");
+const closeBtn=document.getElementById("closeBtn");
+const modal=document.getElementById("modal");
+const form=document.getElementById("studentForm");
+const table=document.getElementById("studentTable");
+const message=document.getElementById("message");
+
+const totalStudents=document.getElementById("totalStudents");
+const avgScore=document.getElementById("avgScore");
+
+const studentId=document.getElementById("studentId");
+const fullName=document.getElementById("fullName");
+const birthDate=document.getElementById("birthDate");
+const className=document.getElementById("className");
+const score=document.getElementById("score");
+const email=document.getElementById("email");
+
+addBtn.addEventListener("click", ()=> {
+        modal.style.display="flex";
+    });
+
+closeBtn.addEventListener("click", closeForm);
+
+form.addEventListener("submit", saveStudent);
+
+function saveStudent(e) {
+    e.preventDefault();
+
+    const student= {
+        studentId: studentId.value,
+            fullName: fullName.value,
+            birthDate: birthDate.value,
+            className: className.value,
+            score: Number(score.value),
+            email: email.value
+    }
+
+    ;
+
+    if(editingIndex===-1) {
+        students.push(student);
+        showMessage("Thêm sinh viên thành công!");
+    }
+
+    else {
+        students[editingIndex]=student;
+        showMessage("Cập nhật sinh viên thành công!");
+        editingIndex=-1;
+    }
+
+    saveLocalStorage();
+    renderStudents();
+    updateStatistics();
+    closeForm();
+}
+
+function renderStudents() {
+
+    table.innerHTML="";
+
+    if(students.length===0) {
+        table.innerHTML=` <tr><td colspan="7">Chưa có dữ liệu</td></tr>`;
+        return;
+    }
+
+    students.forEach((student, index)=> {
+
+            table.innerHTML +=` <tr> <td>$ {
+                student.studentId
+            }
+
+            </td> <td>$ {
+                student.fullName
+            }
+
+            </td> <td>$ {
+                student.birthDate
+            }
+
+            </td> <td>$ {
+                student.className
+            }
+
+            </td> <td>$ {
+                student.score
+            }
+
+            </td> <td>$ {
+                student.email
+            }
+
+            </td> <td> <button class="edit-btn"
+            onclick="editStudent(${index})" > Sửa </button> <button class="delete-btn"
+            onclick="deleteStudent(${index})" > Xóa </button> </td> </tr> `;
+        });
+}
+
+function editStudent(index) {
+
+    editingIndex=index;
+
+    const student=students[index];
+
+    studentId.value=student.studentId;
+    fullName.value=student.fullName;
+    birthDate.value=student.birthDate;
+    className.value=student.className;
+    score.value=student.score;
+    email.value=student.email;
+
+    modal.style.display="flex";
+
+    document.getElementById("formTitle").innerText="Cập nhật sinh viên";
+}
+
+function deleteStudent(index) {
+
+    const confirmDelete=confirm("Bạn có chắc muốn xóa?");
+
+    if( !confirmDelete) return;
+
+    students.splice(index, 1);
+
+    saveLocalStorage();
+    renderStudents();
+    updateStatistics();
+
+    showMessage("Xóa sinh viên thành công!");
+}
+
+function updateStatistics() {
+
+    totalStudents.innerText=students.length;
+
+    if(students.length===0) {
+        avgScore.innerText=0;
+        return;
+    }
+
+    let total=0;
+
+    students.forEach(student=> {
+            total +=student.score;
+        });
+
+    avgScore.innerText=(total/students.length).toFixed(2);
+}
+
+function saveLocalStorage() {
+    localStorage.setItem("students",
+        JSON.stringify(students));
+}
+
+function closeForm() {
+
+    form.reset();
+
+    modal.style.display="none";
+
+    editingIndex=-1;
+
+    document.getElementById("formTitle").innerText="Thêm sinh viên";
+}
+
+function showMessage(text) {
+
+    message.innerText=text;
+
+    setTimeout(()=> {
+            message.innerText="";
+        }
+
+        , 3000);
+}
+
+renderStudents();
+updateStatistics();
