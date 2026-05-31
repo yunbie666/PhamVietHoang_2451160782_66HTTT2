@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Shortcuts & Accessibility</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header" role="banner">
+        <h1>⌨️ Keyboard Navigation App</h1>
+        <div class="shortcut-hints" aria-label="Phím tắt">
+            <span class="kbd-hint"><kbd>←</kbd><kbd>→</kbd> Chuyển ảnh</span>
+            <span class="kbd-hint"><kbd>Space</kbd> Play/Pause</span>
+            <span class="kbd-hint"><kbd>1-9</kbd> Nhảy đến ảnh</span>
+            <span class="kbd-hint"><kbd>Ctrl+K</kbd> Command Palette</span>
+        </div>
+    </header>
+
+    <main class="main-content" role="main">
+
+        <!-- GALLERY -->
+        <section class="gallery-section" aria-label="Thư viện ảnh">
+            <div class="section-header">
+                <h2>🖼️ Photo Gallery</h2>
+                <div class="gallery-controls">
+                    <button id="prevBtn" class="gallery-btn" aria-label="Ảnh trước">◀</button>
+                    <span class="slide-indicator" id="slideIndicator" aria-live="polite">1 / 9</span>
+                    <button id="nextBtn" class="gallery-btn" aria-label="Ảnh tiếp theo">▶</button>
+                    <button id="playBtn" class="gallery-btn play-btn" aria-label="Play slideshow" aria-pressed="false">▶️ Play</button>
+                </div>
+            </div>
+
+            <!-- Thumbnails -->
+            <div class="thumbnails" id="thumbnails" role="list" aria-label="Danh sách ảnh">
+                <!-- Render by JS -->
+            </div>
+
+            <!-- Main image (modal) -->
+            <div class="gallery-modal hidden" id="galleryModal" role="dialog" aria-modal="true" aria-label="Xem ảnh lớn">
+                <div class="gallery-modal-inner">
+                    <button class="gm-close" id="gmClose" aria-label="Đóng ảnh">✕</button>
+                    <button class="gm-nav gm-prev" id="gmPrev" aria-label="Ảnh trước">‹</button>
+                    <img id="gmImage" src="" alt="" class="gm-img">
+                    <button class="gm-nav gm-next" id="gmNext" aria-label="Ảnh tiếp theo">›</button>
+                    <div class="gm-caption" id="gmCaption" aria-live="polite"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMAND PALETTE -->
+        <section class="commands-section" aria-label="Danh sách lệnh">
+            <h2>🔧 Commands <small>(Ctrl+K để mở palette)</small></h2>
+            <div class="commands-grid" id="commandsGrid">
+                <!-- Render by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Command Palette Overlay -->
+    <div class="palette-overlay hidden" id="paletteOverlay" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div class="palette" id="palette">
+            <div class="palette-search">
+                <span class="palette-icon">⌘</span>
+                <input
+                    type="text"
+                    id="paletteInput"
+                    placeholder="Tìm lệnh..."
+                    aria-label="Tìm kiếm lệnh"
+                    autocomplete="off"
+                />
+                <kbd class="palette-esc">Esc</kbd>
+            </div>
+            <ul class="palette-list" id="paletteList" role="listbox" aria-label="Danh sách lệnh">
+                <!-- Render by JS -->
+            </ul>
+            <div class="palette-footer">
+                <span><kbd>↑</kbd><kbd>↓</kbd> Di chuyển</span>
+                <span><kbd>Enter</kbd> Chọn</span>
+                <span><kbd>Esc</kbd> Đóng</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
