@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Directory</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #2d3748; }
+header { background: #2b6cb0; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+header h1 { font-size: 1.4rem; flex: 1; }
+.btn { padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 600; transition: all 0.2s; }
+.btn-primary { background: #4299e1; color: white; }
+.btn-primary:hover { background: #3182ce; }
+.btn-danger  { background: #fc8181; color: white; }
+.btn-danger:hover { background: #e53e3e; }
+.btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+.toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 200px; padding: 10px 14px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 0.95rem; }
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 10px; color: white; font-weight: 600; font-size: 0.9rem; display: none; z-index: 999; animation: slideUp 0.3s ease; }
+.toast.success { background: #48bb78; }
+.toast.error   { background: #e53e3e; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* Grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+/* Skeleton */
+.skeleton-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.skeleton-line { background: linear-gradient(90deg, #e2e8f0 25%, #edf2f7 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; margin-bottom: 10px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+/* User card */
+.user-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.user-avatar { width: 48px; height: 48px; background: #bee3f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; color: #2b6cb0; margin-bottom: 12px; }
+.user-name  { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+.user-email { font-size: 0.82rem; color: #718096; margin-bottom: 4px; }
+.user-phone { font-size: 0.82rem; color: #718096; margin-bottom: 12px; }
+.card-actions { display: flex; gap: 8px; }
+/* Modal */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 100; }
+.overlay.open { display: flex; }
+.modal { background: white; border-radius: 16px; padding: 28px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+.modal h2 { margin-bottom: 20px; font-size: 1.2rem; }
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: #4a5568; }
+.form-input { width: 100%; padding: 9px 13px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 0.95rem; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.empty { text-align: center; padding: 48px; color: #a0aec0; font-size: 1rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>👥 User Directory</h1>
+  <button class="btn btn-primary" onclick="ui.openModal()">+ Thêm user</button>
+</header>
+
+<main>
+  <div class="toolbar">
+    <input class="search-input" type="text" id="searchInput" placeholder="🔍 Tìm theo tên hoặc email..." oninput="filterUsers()">
+  </div>
+  <div class="grid" id="userGrid"></div>
+</main>
+
+<!-- Modal thêm/sửa -->
+<div class="overlay" id="overlay" onclick="ui.closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2 id="modalTitle">Thêm user mới</h2>
+    <input type="hidden" id="editId">
+    <div class="form-group"><label>Tên</label><input class="form-input" id="fName" placeholder="Nguyễn Văn A"></div>
+    <div class="form-group"><label>Email</label><input class="form-input" id="fEmail" placeholder="a@example.com"></div>
+    <div class="form-group"><label>Điện thoại</label><input class="form-input" id="fPhone" placeholder="0901234567"></div>
+    <div class="form-group"><label>Website</label><input class="form-input" id="fWebsite" placeholder="example.com"></div>
+    <div class="modal-actions">
+      <button class="btn" style="background:#e2e8f0;" onclick="ui.closeModal()">Hủy</button>
+      <button class="btn btn-primary" onclick="submitForm()">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// API LAYER
+// ============================================================
+const api = {
+  baseURL: "https://jsonplaceholder.typicode.com",
+
+  async getUsers() {
+    const res = await fetch(`${this.baseURL}/users`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  },
+  async createUser(data) {
+    const res = await fetch(`${this.baseURL}/users`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  },
+  async updateUser(id, data) {
+    const res = await fetch(`${this.baseURL}/users/${id}`, {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  },
+  async deleteUser(id) {
+    const res = await fetch(`${this.baseURL}/users/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return true;
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let allUsers = [];
+
+// ============================================================
+// UI LAYER
+// ============================================================
+const ui = {
+  renderUsers(users) {
+    const grid = document.getElementById("userGrid");
+    if (users.length === 0) {
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Không tìm thấy user nào.</div>`;
+      return;
+    }
+    grid.innerHTML = users.map(u => `
+      <div class="user-card" id="card-${u.id}">
+        <div class="user-avatar">${u.name.charAt(0)}</div>
+        <div class="user-name">${u.name}</div>
+        <div class="user-email">📧 ${u.email}</div>
+        <div class="user-phone">📞 ${u.phone || "—"}</div>
+        <div class="card-actions">
+          <button class="btn btn-sm btn-primary" onclick="editUser(${u.id})">✏️ Sửa</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.id})">🗑 Xóa</button>
+        </div>
+      </div>
+    `).join("");
+  },
+
+  showSkeleton() {
+    const grid = document.getElementById("userGrid");
+    grid.innerHTML = Array(8).fill(0).map(() => `
+      <div class="skeleton-card">
+        <div class="skeleton-line" style="width:48px;height:48px;border-radius:50%;margin-bottom:12px;"></div>
+        <div class="skeleton-line" style="width:70%;height:16px;"></div>
+        <div class="skeleton-line" style="width:90%;height:12px;"></div>
+        <div class="skeleton-line" style="width:60%;height:12px;"></div>
+      </div>
+    `).join("");
+  },
+
+  showToast(message, type = "success") {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3000);
+  },
+
+  openModal(user = null) {
+    document.getElementById("overlay").classList.add("open");
+    document.getElementById("modalTitle").textContent = user ? "Sửa user" : "Thêm user mới";
+    document.getElementById("editId").value   = user?.id || "";
+    document.getElementById("fName").value    = user?.name || "";
+    document.getElementById("fEmail").value   = user?.email || "";
+    document.getElementById("fPhone").value   = user?.phone || "";
+    document.getElementById("fWebsite").value = user?.website || "";
+  },
+
+  closeModal(e) {
+    if (!e || e.target === document.getElementById("overlay")) {
+      document.getElementById("overlay").classList.remove("open");
+    }
+  }
+};
+
+// ============================================================
+// HANDLERS
+// ============================================================
+async function loadUsers() {
+  ui.showSkeleton();
+  try {
+    allUsers = await api.getUsers();
+    ui.renderUsers(allUsers);
+  } catch (err) {
+    ui.showToast("Lỗi khi tải danh sách: " + err.message, "error");
+  }
+}
+
+async function submitForm() {
+  const id      = document.getElementById("editId").value;
+  const payload = {
+    name:    document.getElementById("fName").value.trim(),
+    email:   document.getElementById("fEmail").value.trim(),
+    phone:   document.getElementById("fPhone").value.trim(),
+    website: document.getElementById("fWebsite").value.trim(),
+  };
+  if (!payload.name || !payload.email) {
+    ui.showToast("Vui lòng điền đầy đủ tên và email!", "error"); return;
+  }
+  try {
+    if (id) {
+      await api.updateUser(id, payload);
+      allUsers = allUsers.map(u => u.id == id ? { ...u, ...payload } : u);
+      ui.showToast("Cập nhật thành công!");
+    } else {
+      const newUser = await api.createUser(payload);
+      newUser.id = Date.now(); // JSONPlaceholder luôn trả về id=11
+      allUsers.unshift(newUser);
+      ui.showToast("Thêm user thành công!");
+    }
+    ui.renderUsers(allUsers);
+    ui.closeModal();
+  } catch (err) {
+    ui.showToast("Lỗi: " + err.message, "error");
+  }
+}
+
+function editUser(id) {
+  const user = allUsers.find(u => u.id === id);
+  if (user) ui.openModal(user);
+}
+
+async function deleteUser(id) {
+  if (!confirm("Bạn có chắc muốn xóa user này?")) return;
+  try {
+    await api.deleteUser(id);
+    allUsers = allUsers.filter(u => u.id !== id);
+    ui.renderUsers(allUsers);
+    ui.showToast("Đã xóa user.");
+  } catch (err) {
+    ui.showToast("Lỗi khi xóa: " + err.message, "error");
+  }
+}
+
+function filterUsers() {
+  const kw = document.getElementById("searchInput").value.toLowerCase();
+  const filtered = allUsers.filter(u =>
+    u.name.toLowerCase().includes(kw) || u.email.toLowerCase().includes(kw)
+  );
+  ui.renderUsers(filtered);
+}
+
+// Khởi chạy
+loadUsers();
+</script>
+</body>
+</html>

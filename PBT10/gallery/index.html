@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinite Scroll Gallery</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #111; color: white; }
+header { text-align: center; padding: 28px 16px 20px; }
+header h1 { font-size: 1.8rem; letter-spacing: 2px; }
+header p { color: #888; font-size: 0.9rem; margin-top: 6px; }
+.gallery { columns: 4 260px; column-gap: 12px; padding: 0 16px; }
+.photo-wrap { break-inside: avoid; margin-bottom: 12px; position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; background: #222; }
+.photo-wrap img { width: 100%; display: block; opacity: 0; transition: opacity 0.4s, transform 0.3s; }
+.photo-wrap img.loaded { opacity: 1; }
+.photo-wrap:hover img { transform: scale(1.04); }
+.photo-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 20px 10px 8px; font-size: 0.78rem; color: #ddd; opacity: 0; transition: opacity 0.2s; }
+.photo-wrap:hover .photo-caption { opacity: 1; }
+/* Skeleton */
+.photo-skeleton { break-inside: avoid; margin-bottom: 12px; border-radius: 10px; background: linear-gradient(90deg, #222 25%, #333 50%, #222 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+/* Load trigger */
+#loadTrigger { height: 80px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.9rem; }
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; align-items: center; justify-content: center; z-index: 200; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; object-fit: contain; }
+.lightbox-close { position: fixed; top: 20px; right: 24px; font-size: 2rem; cursor: pointer; color: white; background: none; border: none; line-height: 1; }
+.lightbox-info { position: fixed; bottom: 24px; left: 0; right: 0; text-align: center; color: #ccc; font-size: 0.9rem; }
+@media (max-width: 600px) { .gallery { columns: 1; } }
+@media (min-width: 601px) and (max-width: 900px) { .gallery { columns: 2; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>📷 Gallery</h1>
+  <p id="photoCount">Đang tải...</p>
+</header>
+
+<div class="gallery" id="gallery"></div>
+<div id="loadTrigger">⏳ Đang tải thêm...</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-info" id="lightboxInfo"></div>
+</div>
+
+<script>
+const API  = "https://picsum.photos/v2/list";
+const LIMIT = 20;
+let page   = 0;
+let loading = false;
+let total   = 0;
+
+// ── Lazy load images với IntersectionObserver ──
+const imgObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src;
+      img.onload = () => img.classList.add("loaded");
+      imgObserver.unobserve(img);
+    }
+  });
+}, { rootMargin: "200px" });
+
+// ── Infinite scroll trigger ──
+const scrollObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !loading) {
+    loadMorePhotos();
+  }
+});
+scrollObserver.observe(document.getElementById("loadTrigger"));
+
+async function loadMorePhotos() {
+  if (loading) return;
+  loading = true;
+  page++;
+
+  // Hiện skeleton
+  const gallery = document.getElementById("gallery");
+  const skeletons = Array(LIMIT).fill(0).map((_, i) => {
+    const d = document.createElement("div");
+    d.className = "photo-skeleton";
+    d.style.height = (120 + (i % 5) * 40) + "px";
+    d.dataset.skeleton = "true";
+    gallery.appendChild(d);
+    return d;
+  });
+
+  try {
+    const res  = await fetch(`${API}?page=${page}&limit=${LIMIT}`);
+    const photos = await res.json();
+
+    // Xóa skeleton
+    skeletons.forEach(s => s.remove());
+
+    if (photos.length === 0) {
+      document.getElementById("loadTrigger").textContent = "✅ Đã tải hết ảnh.";
+      scrollObserver.disconnect();
+      loading = false;
+      return;
+    }
+
+    photos.forEach(photo => {
+      total++;
+      const wrap = document.createElement("div");
+      wrap.className = "photo-wrap";
+      wrap.innerHTML = `
+        <img data-src="https://picsum.photos/id/${photo.id}/600/800" alt="${photo.author}">
+        <div class="photo-caption">📷 ${photo.author}</div>
+      `;
+      wrap.addEventListener("click", () => openLightbox(photo));
+      gallery.appendChild(wrap);
+
+      // Lazy load
+      imgObserver.observe(wrap.querySelector("img"));
+    });
+
+    document.getElementById("photoCount").textContent = `${total} ảnh đã tải`;
+  } catch (err) {
+    skeletons.forEach(s => s.remove());
+    document.getElementById("loadTrigger").textContent = "⚠️ Lỗi tải ảnh. Cuộn lại để thử.";
+  }
+
+  loading = false;
+}
+
+function openLightbox(photo) {
+  const lb = document.getElementById("lightbox");
+  document.getElementById("lightboxImg").src = `https://picsum.photos/id/${photo.id}/1200/900`;
+  document.getElementById("lightboxInfo").textContent = `📷 ${photo.author} — ${photo.width}×${photo.height}`;
+  lb.classList.add("open");
+}
+
+function closeLightbox(e) {
+  if (!e || e.target === document.getElementById("lightbox") || e.currentTarget.tagName === "BUTTON") {
+    document.getElementById("lightbox").classList.remove("open");
+  }
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeLightbox();
+});
+</script>
+</body>
+</html>

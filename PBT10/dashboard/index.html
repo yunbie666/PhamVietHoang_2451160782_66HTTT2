@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-API Dashboard</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+header { background: #1e293b; padding: 20px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #334155; }
+header h1 { flex: 1; font-size: 1.4rem; }
+.badge { background: #334155; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; color: #94a3b8; }
+.btn { padding: 9px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.875rem; background: #3b82f6; color: white; transition: background 0.2s; }
+.btn:hover { background: #2563eb; }
+.btn:disabled { background: #475569; cursor: not-allowed; }
+main { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+.widget { background: #1e293b; border-radius: 16px; padding: 20px; border: 1px solid #334155; min-height: 200px; }
+.widget-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.widget-icon { font-size: 1.4rem; }
+.widget-title { font-size: 1rem; font-weight: 700; }
+.widget-status { margin-left: auto; font-size: 0.75rem; padding: 3px 8px; border-radius: 12px; }
+.status-loading { background: #1e3a5f; color: #60a5fa; }
+.status-ok      { background: #14532d; color: #4ade80; }
+.status-error   { background: #450a0a; color: #f87171; }
+/* Loading */
+.widget-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; color: #64748b; }
+.spinner { width: 32px; height: 32px; border: 3px solid #334155; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 10px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+/* Error */
+.widget-error { color: #f87171; font-size: 0.9rem; padding: 12px; background: #1a0a0a; border-radius: 8px; }
+/* Weather widget */
+.weather-main { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+.weather-temp { font-size: 3rem; font-weight: bold; color: #fbbf24; }
+.weather-icon-lg { font-size: 3rem; }
+.weather-label { color: #94a3b8; font-size: 0.85rem; }
+.weather-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.weather-item { background: #0f172a; border-radius: 8px; padding: 8px 12px; }
+.weather-item .label { font-size: 0.72rem; color: #64748b; }
+.weather-item .val   { font-weight: 700; }
+/* Users widget */
+.user-list { display: flex; flex-direction: column; gap: 8px; }
+.user-row { display: flex; align-items: center; gap: 12px; padding: 8px; background: #0f172a; border-radius: 8px; }
+.avatar { width: 36px; height: 36px; background: #1d4ed8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0; }
+.user-info .name  { font-size: 0.88rem; font-weight: 600; }
+.user-info .email { font-size: 0.75rem; color: #64748b; }
+/* Country widget */
+.country-flag { font-size: 4rem; text-align: center; margin-bottom: 8px; }
+.country-name { font-size: 1.3rem; font-weight: bold; text-align: center; margin-bottom: 12px; }
+.country-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.country-item { background: #0f172a; border-radius: 8px; padding: 8px 12px; }
+.country-item .label { font-size: 0.72rem; color: #64748b; }
+.country-item .val   { font-weight: 700; font-size: 0.9rem; }
+/* Timer */
+#loadTime { color: #64748b; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📊 Multi-API Dashboard</h1>
+  <span class="badge" id="loadTime">—</span>
+  <button class="btn" id="refreshBtn" onclick="loadDashboard()">🔄 Refresh All</button>
+</header>
+<main>
+  <div class="grid">
+    <div class="widget" id="w0">
+      <div class="widget-header">
+        <span class="widget-icon">🌤️</span>
+        <span class="widget-title">Thời tiết Hà Nội</span>
+        <span class="widget-status status-loading" id="s0">Loading</span>
+      </div>
+      <div id="c0"><div class="widget-loading"><div class="spinner"></div>Đang tải...</div></div>
+    </div>
+    <div class="widget" id="w1">
+      <div class="widget-header">
+        <span class="widget-icon">👥</span>
+        <span class="widget-title">Random Users</span>
+        <span class="widget-status status-loading" id="s1">Loading</span>
+      </div>
+      <div id="c1"><div class="widget-loading"><div class="spinner"></div>Đang tải...</div></div>
+    </div>
+    <div class="widget" id="w2">
+      <div class="widget-header">
+        <span class="widget-icon">🇻🇳</span>
+        <span class="widget-title">Vietnam Info</span>
+        <span class="widget-status status-loading" id="s2">Loading</span>
+      </div>
+      <div id="c2"><div class="widget-loading"><div class="spinner"></div>Đang tải...</div></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const APIs = [
+  {
+    name: "Weather",
+    fetch: () => fetch("https://api.open-meteo.com/v1/forecast?latitude=21.03&longitude=105.85&current_weather=true&timezone=Asia%2FBangkok").then(r => r.json()),
+    render: (data) => {
+      const cw = data.current_weather;
+      const icons = { 0:"☀️", 1:"🌤️", 2:"⛅", 3:"☁️", 45:"🌫️", 61:"🌧️", 63:"🌧️", 80:"🌦️", 95:"⛈️" };
+      const icon = icons[cw.weathercode] || "🌡️";
+      return `
+        <div class="weather-main">
+          <div class="weather-icon-lg">${icon}</div>
+          <div>
+            <div class="weather-temp">${Math.round(cw.temperature)}°C</div>
+            <div class="weather-label">Hà Nội, Việt Nam</div>
+          </div>
+        </div>
+        <div class="weather-grid">
+          <div class="weather-item"><div class="label">Gió</div><div class="val">${cw.windspeed} km/h</div></div>
+          <div class="weather-item"><div class="label">Hướng gió</div><div class="val">${cw.winddirection}°</div></div>
+          <div class="weather-item"><div class="label">Mã thời tiết</div><div class="val">WMO ${cw.weathercode}</div></div>
+          <div class="weather-item"><div class="label">Cập nhật</div><div class="val">${new Date().toLocaleTimeString("vi-VN")}</div></div>
+        </div>
+      `;
+    }
+  },
+  {
+    name: "Users",
+    fetch: () => fetch("https://randomuser.me/api/?results=5&nat=us,gb,au").then(r => r.json()),
+    render: (data) => {
+      const users = data.results;
+      return `<div class="user-list">${users.map(u => `
+        <div class="user-row">
+          <div class="avatar">${u.name.first.charAt(0)}</div>
+          <div class="user-info">
+            <div class="name">${u.name.first} ${u.name.last}</div>
+            <div class="email">${u.email}</div>
+          </div>
+          <span style="margin-left:auto;font-size:1.2rem">${u.nat === "US" ? "🇺🇸" : u.nat === "GB" ? "🇬🇧" : "🇦🇺"}</span>
+        </div>
+      `).join("")}</div>`;
+    }
+  },
+  {
+    name: "Vietnam",
+    fetch: () => fetch("https://restcountries.com/v3.1/alpha/VN").then(r => r.json()),
+    render: (data) => {
+      const c = data[0];
+      const pop = (c.population / 1e6).toFixed(1) + " triệu";
+      const area = c.area.toLocaleString("vi-VN") + " km²";
+      const langs = Object.values(c.languages || {}).join(", ");
+      const curr  = Object.values(c.currencies || {}).map(x => x.name).join(", ");
+      return `
+        <div class="country-flag">🇻🇳</div>
+        <div class="country-name">${c.name.official}</div>
+        <div class="country-grid">
+          <div class="country-item"><div class="label">Dân số</div><div class="val">${pop}</div></div>
+          <div class="country-item"><div class="label">Diện tích</div><div class="val">${area}</div></div>
+          <div class="country-item"><div class="label">Ngôn ngữ</div><div class="val">${langs}</div></div>
+          <div class="country-item"><div class="label">Đồng tiền</div><div class="val">${curr}</div></div>
+        </div>
+      `;
+    }
+  }
+];
+
+function setWidgetStatus(i, status) {
+  const s = document.getElementById(`s${i}`);
+  s.textContent = { loading: "Loading", ok: "✓ OK", error: "✗ Lỗi" }[status];
+  s.className = `widget-status status-${status}`;
+}
+
+async function loadDashboard() {
+  const btn = document.getElementById("refreshBtn");
+  btn.disabled = true;
+  const startTime = Date.now();
+
+  // Reset tất cả widget về loading
+  APIs.forEach((_, i) => {
+    setWidgetStatus(i, "loading");
+    document.getElementById(`c${i}`).innerHTML = `<div class="widget-loading"><div class="spinner"></div>Đang tải...</div>`;
+  });
+
+  // Gọi song song bằng Promise.allSettled
+  const results = await Promise.allSettled(APIs.map(a => a.fetch()));
+
+  const elapsed = Date.now() - startTime;
+  document.getElementById("loadTime").textContent = `Loaded in ${elapsed}ms`;
+
+  results.forEach((result, i) => {
+    const content = document.getElementById(`c${i}`);
+    if (result.status === "fulfilled") {
+      try {
+        content.innerHTML = APIs[i].render(result.value);
+        setWidgetStatus(i, "ok");
+      } catch (e) {
+        content.innerHTML = `<div class="widget-error">⚠️ Lỗi render: ${e.message}</div>`;
+        setWidgetStatus(i, "error");
+      }
+    } else {
+      content.innerHTML = `<div class="widget-error">⚠️ ${result.reason?.message || "Không thể kết nối API"}</div>`;
+      setWidgetStatus(i, "error");
+    }
+  });
+
+  btn.disabled = false;
+}
+
+// Tự động load khi mở trang
+loadDashboard();
+</script>
+</body>
+</html>

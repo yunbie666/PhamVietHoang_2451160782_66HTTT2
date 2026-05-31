@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather App</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e3c72, #2a5298); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 40px 16px; }
+  .container { background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); border-radius: 20px; padding: 32px; width: 100%; max-width: 480px; color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  h1 { text-align: center; font-size: 1.6rem; margin-bottom: 24px; }
+  .search-row { display: flex; gap: 8px; margin-bottom: 20px; }
+  input { flex: 1; padding: 12px 16px; border: none; border-radius: 12px; background: rgba(255,255,255,0.2); color: white; font-size: 1rem; outline: none; }
+  input::placeholder { color: rgba(255,255,255,0.6); }
+  button { padding: 12px 20px; border: none; border-radius: 12px; background: #4fc3f7; color: #1e3c72; font-weight: bold; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+  button:hover { background: #81d4fa; }
+  /* States */
+  .state { text-align: center; padding: 24px; display: none; }
+  .state.active { display: block; }
+  .spinner { width: 44px; height: 44px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* Weather card */
+  .weather-card { background: rgba(255,255,255,0.15); border-radius: 16px; padding: 24px; text-align: center; }
+  .weather-icon { font-size: 4rem; margin-bottom: 8px; }
+  .temp { font-size: 3rem; font-weight: bold; }
+  .city-name { font-size: 1.3rem; opacity: 0.9; margin-bottom: 12px; }
+  .desc { font-size: 1.1rem; margin-bottom: 16px; text-transform: capitalize; }
+  .details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .detail-item { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; }
+  .detail-label { font-size: 0.75rem; opacity: 0.7; }
+  .detail-value { font-size: 1.1rem; font-weight: bold; }
+  /* Error */
+  .error-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .error-msg { font-size: 1rem; opacity: 0.85; }
+  /* History */
+  .history { margin-top: 20px; }
+  .history h3 { font-size: 0.9rem; opacity: 0.7; margin-bottom: 8px; }
+  .history-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .history-chip { background: rgba(255,255,255,0.15); border: none; color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
+  .history-chip:hover { background: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🌤️ Weather App</h1>
+
+  <div class="search-row">
+    <input type="text" id="cityInput" placeholder="Nhập tên thành phố..." />
+    <button onclick="searchWeather()">Tìm</button>
+  </div>
+
+  <!-- Loading state -->
+  <div class="state" id="loadingState">
+    <div class="spinner"></div>
+    <p>Đang tải thời tiết...</p>
+  </div>
+
+  <!-- Success state -->
+  <div class="state" id="successState">
+    <div class="weather-card">
+      <div class="weather-icon" id="weatherIcon">☀️</div>
+      <div class="temp" id="temp">--°C</div>
+      <div class="city-name" id="cityName">--</div>
+      <div class="desc" id="desc">--</div>
+      <div class="details">
+        <div class="detail-item"><div class="detail-label">Cảm giác như</div><div class="detail-value" id="feelsLike">--</div></div>
+        <div class="detail-item"><div class="detail-label">Tốc độ gió</div><div class="detail-value" id="wind">--</div></div>
+        <div class="detail-item"><div class="detail-label">Mã thời tiết</div><div class="detail-value" id="weatherCode">--</div></div>
+        <div class="detail-item"><div class="detail-label">Hướng gió</div><div class="detail-value" id="windDir">--</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div class="state" id="errorState">
+    <div class="error-icon">⚠️</div>
+    <p class="error-msg" id="errorMsg">Không tìm thấy thành phố.</p>
+  </div>
+
+  <!-- Search history -->
+  <div class="history" id="historySection" style="display:none;">
+    <h3>🕒 Tìm kiếm gần đây</h3>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<script>
+const HISTORY_KEY = "weather_history";
+const MAX_HISTORY = 5;
+
+// Bản đồ mã thời tiết WMO → mô tả + icon
+const weatherDescriptions = {
+  0: { desc: "Trời quang", icon: "☀️" },
+  1: { desc: "Phần lớn quang", icon: "🌤️" },
+  2: { desc: "Có mây rải rác", icon: "⛅" },
+  3: { desc: "Nhiều mây", icon: "☁️" },
+  45: { desc: "Có sương mù", icon: "🌫️" },
+  48: { desc: "Sương mù đóng băng", icon: "🌫️" },
+  51: { desc: "Mưa phùn nhẹ", icon: "🌦️" },
+  61: { desc: "Mưa nhẹ", icon: "🌧️" },
+  63: { desc: "Mưa vừa", icon: "🌧️" },
+  65: { desc: "Mưa to", icon: "🌧️" },
+  80: { desc: "Mưa rào nhẹ", icon: "🌦️" },
+  95: { desc: "Dông bão", icon: "⛈️" },
+};
+
+function showState(state) {
+  ["loadingState","successState","errorState"].forEach(id => {
+    document.getElementById(id).classList.remove("active");
+  });
+  document.getElementById(state).classList.add("active");
+}
+
+async function geocodeCity(city) {
+  const res = await fetch(
+    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=vi`
+  );
+  const data = await res.json();
+  if (!data.results || data.results.length === 0) throw new Error("Không tìm thấy thành phố.");
+  return data.results[0];
+}
+
+async function fetchWeather(lat, lon) {
+  const res = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=apparent_temperature&timezone=auto`
+  );
+  if (!res.ok) throw new Error(`Lỗi API thời tiết (${res.status})`);
+  return res.json();
+}
+
+async function searchWeather(city) {
+  city = city || document.getElementById("cityInput").value.trim();
+  if (!city) return;
+
+  document.getElementById("cityInput").value = city;
+  showState("loadingState");
+
+  try {
+    const location = await geocodeCity(city);
+    const weather  = await fetchWeather(location.latitude, location.longitude);
+    const cw       = weather.current_weather;
+    const wInfo    = weatherDescriptions[cw.weathercode] || { desc: "Không xác định", icon: "🌡️" };
+
+    document.getElementById("weatherIcon").textContent = wInfo.icon;
+    document.getElementById("temp").textContent         = `${Math.round(cw.temperature)}°C`;
+    document.getElementById("cityName").textContent     = `${location.name}, ${location.country}`;
+    document.getElementById("desc").textContent         = wInfo.desc;
+    document.getElementById("feelsLike").textContent    = `${Math.round(weather.hourly?.apparent_temperature?.[0] ?? cw.temperature)}°C`;
+    document.getElementById("wind").textContent         = `${cw.windspeed} km/h`;
+    document.getElementById("weatherCode").textContent  = `WMO ${cw.weathercode}`;
+    document.getElementById("windDir").textContent      = `${cw.winddirection}°`;
+
+    showState("successState");
+    saveHistory(city);
+    renderHistory();
+  } catch (err) {
+    document.getElementById("errorMsg").textContent = err.message;
+    showState("errorState");
+  }
+}
+
+function saveHistory(city) {
+  let history = getHistory();
+  history = [city, ...history.filter(c => c.toLowerCase() !== city.toLowerCase())].slice(0, MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+}
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+  catch { return []; }
+}
+
+function renderHistory() {
+  const history = getHistory();
+  const section = document.getElementById("historySection");
+  const list    = document.getElementById("historyList");
+  if (history.length === 0) { section.style.display = "none"; return; }
+  section.style.display = "block";
+  list.innerHTML = history.map(c =>
+    `<button class="history-chip" onclick="searchWeather('${c}')">${c}</button>`
+  ).join("");
+}
+
+document.getElementById("cityInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") searchWeather();
+});
+
+// Khởi tạo lịch sử
+renderHistory();
+</script>
+</body>
+</html>
