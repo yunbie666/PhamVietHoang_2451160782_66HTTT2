@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Đoán Số — B3</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 40px 48px;
+            width: 440px;
+            max-width: 95vw;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 6px;
+            background: linear-gradient(90deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+        }
+
+        /* Progress bar */
+        .progress-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 99px;
+            height: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            border-radius: 99px;
+            background: #4ade80;
+            transition: width 0.4s ease, background 0.4s ease;
+        }
+        #attempts {
+            text-align: right;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 24px;
+        }
+
+        /* Input row */
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        #guessInput {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        #guessInput:focus { border-color: #a78bfa; }
+        #guessInput:disabled { opacity: 0.4; cursor: not-allowed; }
+        #guessInput::placeholder { color: rgba(255,255,255,0.3); }
+
+        #guessBtn {
+            padding: 14px 22px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        #guessBtn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+        #guessBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Message */
+        .message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .message.info    { background: rgba(96,165,250,0.2); border: 1px solid #60a5fa; }
+        .message.success { background: rgba(74,222,128,0.2); border: 1px solid #4ade80; }
+        .message.danger  { background: rgba(248,113,113,0.2); border: 1px solid #f87171; }
+        .message.warning { background: rgba(250,204,21,0.2);  border: 1px solid #facc15; color: #facc15; }
+
+        /* History */
+        .history-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            max-height: 160px;
+            overflow-y: auto;
+        }
+        .history-box h3 { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        #historyList { list-style: none; }
+        #historyList li {
+            font-size: 0.88rem;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.7);
+        }
+        #historyList li:last-child { border: none; }
+
+        #secretReveal {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #f87171;
+            margin-bottom: 12px;
+        }
+
+        #newGameBtn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #newGameBtn:hover { background: rgba(255,255,255,0.18); }
+
+        /* Confetti */
+        #confettiContainer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+        .confetti-piece {
+            position: absolute;
+            top: -10px;
+            width: 10px; height: 10px;
+            border-radius: 2px;
+            animation: fall 2.5s ease-in forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+<div id="confettiContainer"></div>
+
+<div class="card">
+    <h1>🎮 Đoán Số</h1>
+    <p class="subtitle">Tôi đang nghĩ một số từ <strong>1</strong> đến <strong>100</strong></p>
+
+    <div class="progress-track"><div id="progressBar"></div></div>
+    <p id="attempts">Lượt đã dùng: 0 / 7</p>
+
+    <div class="input-row">
+        <input id="guessInput" type="number" min="1" max="100" placeholder="Nhập số 1–100..." autocomplete="off">
+        <button id="guessBtn" onclick="handleGuess()">Đoán</button>
+    </div>
+
+    <div id="message" class="message info">🤔 Hãy bắt đầu đoán nào!</div>
+
+    <div class="history-box">
+        <h3>Lịch sử đoán</h3>
+        <ul id="historyList"></ul>
+    </div>
+
+    <p id="secretReveal"></p>
+    <button id="newGameBtn" onclick="startGame(); showMessage('🎮 Game mới bắt đầu! Chúc may mắn!', \'info\')">🔄 Chơi lại</button>
+</div>
+
+<script src="guess.js"></script>
+</body>
+</html>
